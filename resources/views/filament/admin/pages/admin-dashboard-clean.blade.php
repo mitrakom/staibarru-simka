@@ -1,0 +1,142 @@
+<x-filament-panels::page>
+    <div class="space-y-6">
+        <!-- Header Section -->
+        <div class="relative overflow-hidden rounded-xl p-6 shadow-lg bg-white dark:bg-gradient-to-r dark:from-blue-700 dark:to-purple-800 border border-gray-200 dark:border-transparent">
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Selamat Datang di SIMKA</h1>
+                    <p class="text-gray-600 dark:text-gray-200 mt-1">Sistem Informasi Manajemen Akademik STAI Al-Gazali Barru</p>
+                    <p class="text-gray-500 dark:text-gray-300 text-sm mt-2">{{ now()->format('l, d F Y') }}</p>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://stai-barru.ac.id/wp-content/uploads/2022/09/cropped-Logo-STAI-Barru-192x192.png" 
+                         alt="Logo STAI Al-Gazali Barru" 
+                         class="h-16 w-16 rounded-full border-2 border-gray-300 dark:border-white/30 shadow-md">
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Widgets Section -->
+        <div class="space-y-6">
+            @livewire(\App\Filament\Admin\Widgets\AdminDashboardStatsWidget::class)
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Aksi Cepat</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="{{ \App\Filament\Admin\Resources\MahasiswaResource::getUrl('index') }}" 
+                   class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors border border-blue-100 dark:border-blue-800/50 hover:border-blue-200 dark:hover:border-blue-700">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 616 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-800 dark:text-white">Kelola Mahasiswa</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Data & informasi mahasiswa</p>
+                    </div>
+                </a>
+
+                <a href="{{ \App\Filament\Admin\Resources\KurikulumResource::getUrl('index') }}" 
+                   class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors border border-green-100 dark:border-green-800/50 hover:border-green-200 dark:hover:border-green-700">
+                    <svg class="w-8 h-8 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-800 dark:text-white">Kurikulum</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Kurikulum & mata kuliah</p>
+                    </div>
+                </a>
+
+                <a href="{{ \App\Filament\Admin\Resources\KrsResource::getUrl('index') }}" 
+                   class="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors border border-purple-100 dark:border-purple-800/50 hover:border-purple-200 dark:hover:border-purple-700">
+                    <svg class="w-8 h-8 text-purple-600 dark:text-purple-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-800 dark:text-white">KRS</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Kartu Rencana Studi</p>
+                    </div>
+                </a>
+
+                <a href="{{ \App\Filament\Admin\Resources\ProdiResource::getUrl('index') }}" 
+                   class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors border border-orange-100 dark:border-orange-800/50 hover:border-orange-200 dark:hover:border-orange-700">
+                    <svg class="w-8 h-8 text-orange-600 dark:text-orange-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-800 dark:text-white">Program Studi</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Kelola program studi</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Aktivitas Terbaru</h2>
+            <div class="space-y-4">
+                @php
+                    $recentMahasiswa = \App\Models\Mahasiswa::latest()->take(3)->get();
+                @endphp
+                
+                @forelse($recentMahasiswa as $mahasiswa)
+                <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-800 dark:text-white">
+                            Mahasiswa baru <strong>{{ $mahasiswa->nama }}</strong> telah terdaftar
+                        </p>
+                        <p class="text-xs text-gray-600 dark:text-gray-300">{{ $mahasiswa->created_at->diffForHumans() }}</p>
+                    </div>
+                </div>
+                @empty
+                <p class="text-sm text-gray-600 dark:text-gray-300">Belum ada aktivitas terbaru</p>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- System Info -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Informasi Sistem</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <p class="text-gray-600 dark:text-gray-300">Versi SIMKA</p>
+                    <p class="font-medium text-gray-900 dark:text-white">v1.0.0</p>
+                </div>
+                <div>
+                    <p class="text-gray-600 dark:text-gray-300">Terakhir Update</p>
+                    <p class="font-medium text-gray-900 dark:text-white">{{ now()->format('d M Y') }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600 dark:text-gray-300">Status Sistem</p>
+                    <p class="font-medium text-green-600 dark:text-green-400">Aktif</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        // Ensure smooth dark mode transitions
+        document.documentElement.style.setProperty('color-scheme', 
+            document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        );
+        
+        // Observer untuk memantau perubahan dark mode
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    document.documentElement.style.setProperty('color-scheme', 
+                        document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+                    );
+                }
+            });
+        });
+        
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    </script>
+    @endpush
+</x-filament-panels::page>
