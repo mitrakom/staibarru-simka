@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class MahasiswaResource extends Resource
 {
@@ -90,12 +91,6 @@ class MahasiswaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('prodi.id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('agama_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
@@ -110,22 +105,8 @@ class MahasiswaResource extends Resource
                 Tables\Columns\TextColumn::make('handphone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
+                    ->wrap()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nisn')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nik')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('npwp')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jenis_kelamin'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -154,5 +135,13 @@ class MahasiswaResource extends Resource
             'create' => Pages\CreateMahasiswa::route('/create'),
             'edit' => Pages\EditMahasiswa::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Auth::user();
+        $query->where('prodi_id', $user->prodi_id);
+        return $query;
     }
 }

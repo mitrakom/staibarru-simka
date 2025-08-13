@@ -14,6 +14,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class KurikulumMatakuliahResource extends Resource
 {
@@ -32,14 +33,19 @@ class KurikulumMatakuliahResource extends Resource
             ->columns(1)
             ->schema([
                 Forms\Components\Select::make('kurikulum_id')
-                    ->relationship('kurikulum', 'nama', fn(Builder $query) => $query->where('prodi_id', session('prodi_id'))->orderBy('semester', 'desc'))
+                    ->relationship('kurikulum', 'nama', fn(Builder $query) => $query->where('prodi_id', Auth::user()->prodi_id)->orderBy('semester', 'desc'))
                     ->required()
                     ->preload()
                     ->searchable()
                 // ->columnSpanFull()
                 ,
                 Forms\Components\Select::make('matakuliah_id')
-                    ->relationship('matakuliah', 'nama', fn(Builder $query) => $query->where('prodi_id', session('prodi_id')))
+                    ->relationship(
+                        'matakuliah',
+                        'nama',
+                        fn(Builder $query) => $query->where('prodi_id', Auth::user()->prodi_id)
+                    )
+                    ->getOptionLabelFromRecordUsing(fn($record) => "{$record->kode} - {$record->nama} - {$record->sks} SKS")
                     ->required()
                     ->preload()
                     ->searchable()
@@ -78,7 +84,7 @@ class KurikulumMatakuliahResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('kurikulum_id')
-                    ->relationship('kurikulum', 'nama', fn(Builder $query) => $query->where('prodi_id', session('prodi_id')))
+                    ->relationship('kurikulum', 'nama', fn(Builder $query) => $query->where('prodi_id', Auth::user()->prodi_id))
                     ->preload()
                     ->placeholder('Semua Kurikulum'),
                 SelectFilter::make('semester_ke')
@@ -96,11 +102,6 @@ class KurikulumMatakuliahResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

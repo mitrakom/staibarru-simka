@@ -31,24 +31,21 @@ class PerguruanTinggiResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('alamat')
+                    ->maxLength(55),
+                Forms\Components\TextInput::make('jalan')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(155),
                 Forms\Components\TextInput::make('telepon')
                     ->tel()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(25),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(25),
                 Forms\Components\TextInput::make('website')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('akreditasi')
-                    ->required()
-                    ->maxLength(255),
+                    ->maxLength(35),
             ]);
     }
 
@@ -68,9 +65,7 @@ class PerguruanTinggiResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('website')
                     ->wrap()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('akreditasi')
-                    ->searchable(),
+                    ->searchable()
             ])
             ->filters([
                 //
@@ -97,7 +92,7 @@ class PerguruanTinggiResource extends Resource
     {
         return [
             'index' => Pages\ListPerguruanTinggis::route('/'),
-            'create' => Pages\CreatePerguruanTinggi::route('/create'),
+            // 'create' => Pages\CreatePerguruanTinggi::route('/create'),
             'edit' => Pages\EditPerguruanTinggi::route('/{record}/edit'),
         ];
     }

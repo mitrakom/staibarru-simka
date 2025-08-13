@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Prodi;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,12 @@ class AdminMiddleware
     {
 
         if (Auth::user() && Auth::user()->hasRole([['admin', 'prodi']])) {
+
+            // buat session untuk perguruan_tinggi_id
+            $user = Auth::user();
+            // buat session prodi_id
+            session(['prodi_id' => $user->prodi_id]);
+            session(['perguruan_tinggi_id' => $user->prodi->perguruan_tinggi_id]);
             return $next($request);
         }
 

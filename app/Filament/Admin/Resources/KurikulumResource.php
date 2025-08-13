@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class KurikulumResource extends Resource
 {
@@ -76,10 +77,11 @@ class KurikulumResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('semester')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama')
+                    ->wrap()
                     ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('semester')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_sks_lulus')
                     ->label('Jml. SKS Lulus')
@@ -116,6 +118,7 @@ class KurikulumResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('prodi_id', session('prodi_id'));
+        $user = Auth::user();
+        return parent::getEloquentQuery()->where('prodi_id', $user->prodi_id);
     }
 }

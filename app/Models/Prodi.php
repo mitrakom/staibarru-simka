@@ -10,16 +10,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Prodi extends Model
 {
 
-    // protected $fillable = [
-    //     'fakultas_id',
-    //     'perguruan_tinggi_id',
-    //     'jenjang_id',
-    //     'nama',
-    //     'telepon',
-    //     'kaprodi_nama',
-    //     'kaprodi_nidn',
-    // ];
-
     protected $guarded = [];
 
     public function user(): MorphOne
@@ -34,7 +24,7 @@ class Prodi extends Model
      */
     public function jenjang(): BelongsTo
     {
-        return $this->belongsTo(RefJenjang::class);
+        return $this->belongsTo(RefJenjang::class, 'jenjang_pendidikan_id');
     }
 
     public function fakultas(): BelongsTo

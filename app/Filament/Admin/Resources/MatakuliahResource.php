@@ -10,8 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class MatakuliahResource extends Resource
 {
@@ -147,6 +149,6 @@ class MatakuliahResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('prodi_id', session('prodi_id'));
+        return parent::getEloquentQuery()->where('prodi_id', FacadesAuth::user()->prodi_id);
     }
 }

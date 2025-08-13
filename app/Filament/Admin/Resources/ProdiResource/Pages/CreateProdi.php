@@ -16,7 +16,6 @@ class CreateProdi extends CreateRecord
         $data['perguruan_tinggi_id'] = session('perguruan_tinggi_id');
         $data['fakultas_id'] = session('fakultas_id');
 
-        // dd($data);
         return $data;
     }
 

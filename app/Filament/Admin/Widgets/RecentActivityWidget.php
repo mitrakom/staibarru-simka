@@ -47,7 +47,7 @@ class RecentActivityWidget extends BaseWidget
                 Tables\Actions\Action::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-m-eye')
-                    ->url(fn(Mahasiswa $record): string => \App\Filament\Admin\Resources\MahasiswaResource::getUrl('view', ['record' => $record])),
+                // ->url(fn(Mahasiswa $record): string => \App\Filament\Admin\Resources\MahasiswaResource::getUrl('view', ['record' => $record])),
             ])
             ->emptyStateHeading('Belum ada mahasiswa terdaftar')
             ->emptyStateDescription('Mahasiswa yang baru mendaftar akan muncul di sini.')

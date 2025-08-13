@@ -36,8 +36,9 @@ class ProdiResource extends Resource
                             ->maxLength(255)
                             ->columnSpanFull(),
 
-                        Forms\Components\Select::make('jenjang_id')
-                            ->relationship(name: 'jenjang', titleAttribute: 'nama')
+                        Forms\Components\Select::make('jenjang_pendidikan_id')
+                            ->label('Jenjang Pendidikan')
+                            ->options(\App\Models\RefJenjang::pluck('nama', 'id'))
                             ->required(),
                         Forms\Components\TextInput::make('telepon')
                             ->tel()
@@ -64,16 +65,19 @@ class ProdiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('fakultas.nama')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('fakultas.nama')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Prodi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jenjang.nama')
-                    ->label('Jenjang')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('kaprodi_nama')
+                    ->label('Nama Kaprodi')
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('jenjang.nama')
+                //     ->label('Jenjang')
+                //     ->searchable()
+                //     ->sortable(),
             ])
             ->filters([
                 //
