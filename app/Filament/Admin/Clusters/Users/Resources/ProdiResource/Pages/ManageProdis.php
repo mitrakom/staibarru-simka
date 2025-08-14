@@ -18,12 +18,27 @@ class ManageProdis extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->modalDescription('Password default sementara adalah username. Silakan ganti password setelah login pertama.')
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['identity_type'] = Prodi::class;
+                    $data['name'] = $data['username'];
+                    $data['password'] = bcrypt($data['username']);
+
+                    // Simpan role sebelum di-unset untuk digunakan di after()
+                    $data['_temp_role'] = $data['role'];
+                    unset($data['role']);
+
                     return $data;
                 })
                 ->after(function (array $data, Model $record) {
-                    $record->assignRole('prodi');
+                    // Ambil role dari data yang sudah disimpan
+                    $role = $data['_temp_role'] ?? 'prodi';
+
+                    if ($role === 'admin') {
+                        $record->assignRole('admin');
+                    } else {
+                        $record->assignRole('prodi');
+                    }
                 })
                 ->successNotification(
                     Notification::make()

@@ -21,17 +21,23 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required',
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        $loginType = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials = [
+            $loginType => $request->input('login'),
+            'password' => $request->input('password'),
+        ];
+
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
             return $this->authenticated($request, Auth::user());
         }
 
         throw ValidationException::withMessages([
-            'email' => [trans('auth.failed')],
+            'login' => [trans('auth.failed')],
         ]);
     }
 

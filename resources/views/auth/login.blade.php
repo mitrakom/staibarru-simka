@@ -68,8 +68,8 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input id="email" type="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <label for="login" class="block text-gray-700 text-sm font-bold mb-2">Email atau Username</label>
+                    <input id="login" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="login" value="{{ old('login') }}" required autocomplete="username" autofocus>
                 </div>
 
                 <div class="mb-6">

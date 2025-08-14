@@ -23,8 +23,12 @@ class AdminMiddleware
             // buat session untuk perguruan_tinggi_id
             $user = Auth::user();
             // buat session prodi_id
-            session(['prodi_id' => $user->prodi_id]);
-            session(['perguruan_tinggi_id' => $user->prodi->perguruan_tinggi_id]);
+            session(['prodi_id' => $user->identity->id]);
+            session(['prodi_nama' => $user->identity->nama]);
+            session(['semester' => $user->semester]);
+            session(['perguruan_tinggi_id' => $user->identity->perguruan_tinggi_id]);
+            // dd(session()->all());
+
             return $next($request);
         }
 

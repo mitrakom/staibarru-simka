@@ -2,7 +2,7 @@
     <span class="text-sm font-medium text-gray-700">
         @if ( Auth::user()->hasRole('admin') )
             <strong class="text-gray-900">{{ session('prodi_nama') }} - {{ session('semester')}} </strong>
-        @elseif ( Auth::user()->hasRole('kaprodi'))
+        @elseif ( Auth::user()->hasRole('prodi'))
             <strong class="text-gray-900">{{ session('prodi_nama') }} - {{ session('semester')}} </strong>
         @else
         <strong class="text-gray-900">{{ session('prodi_nama') }} - {{ session('semester')}} </strong>

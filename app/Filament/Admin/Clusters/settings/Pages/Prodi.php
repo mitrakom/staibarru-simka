@@ -57,8 +57,8 @@ class Prodi extends Page
         $user->save();
 
         session([
-            'prodi_id' => $user->prodi->id,
-            'prodi_nama' => $user->prodi->nama,
+            'prodi_id' => $user->identity->id,
+            'prodi_nama' => $user->identity->nama,
         ]);
 
         Notification::make()

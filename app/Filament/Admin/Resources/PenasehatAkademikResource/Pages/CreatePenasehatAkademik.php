@@ -46,7 +46,8 @@ class CreatePenasehatAkademik extends CreateRecord
                 ->schema([
                     Forms\Components\Select::make('dosen_id')
                         ->label('')
-                        ->options(Dosen::where('prodi_id', session('prodi_id'))->pluck('nama', 'id'))
+                        // ->options(Dosen::where('prodi_id', session('prodi_id'))->pluck('nama', 'id'))
+                        ->options(Dosen::pluck('nama', 'id'))
                         ->preload()
                         ->required()
                         ->searchable()

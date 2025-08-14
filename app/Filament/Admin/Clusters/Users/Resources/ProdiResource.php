@@ -22,24 +22,27 @@ class ProdiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $cluster = Users::class;
+    protected static ?string $navigationLabel = 'Admin';
+    protected static ?string $pluralModelLabel = 'Daftar Akun';
 
-    // protected static ?string $navigationGroup = 'Kemiskinan';
-    protected static ?string $navigationLabel = 'Prodi';
-    // protected static ?string $pluralModelLabel = 'Daftar Mappadeceng Miskin';
     protected static ?int $navigationSort = 1;
-
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
+                Forms\Components\TextInput::make('username')
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required(),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                Forms\Components\Select::make('role')
+                    ->label('Role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'prodi' => 'Prodi',
+                    ])
                     ->required(),
                 Forms\Components\Select::make('identity_id')
                     ->label('Prodi')
@@ -47,13 +50,8 @@ class ProdiResource extends Resource
                         return Prodi::pluck('nama', 'id');
                     })
                     ->required(),
-
-                // Forms\Components\Hidden::make('identity_id')
-                //     ->default('prodi_id'),
-                // Forms\Components\Hidden::make('identity_type')
-                //     ->default(Prodi::class),
-
-
+                Forms\Components\Hidden::make('identity_type')
+                    ->default(Prodi::class),
             ]);
     }
 
@@ -61,9 +59,23 @@ class ProdiResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('username')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'prodi' => 'success',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('identity.nama')
                     ->label('Prodi')
                     ->searchable()
@@ -75,11 +87,6 @@ class ProdiResource extends Resource
             ->actions([
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -94,7 +101,7 @@ class ProdiResource extends Resource
     {
         return parent::getEloquentQuery()
             ->whereHas('roles', function ($query) {
-                $query->where('name', 'prodi');
+                $query->whereIn('name', ['admin', 'prodi']);
             });
     }
 }

@@ -24,10 +24,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'identity_type',
         'identity_id',
+        'is_active',
     ];
 
     /**
@@ -120,15 +122,5 @@ class User extends Authenticatable
     public function isDosen()
     {
         return $this->identity instanceof Dosen;
-    }
-
-    /**
-     * Get the prodi that owns the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function prodi(): BelongsTo
-    {
-        return $this->belongsTo(Prodi::class);
     }
 }

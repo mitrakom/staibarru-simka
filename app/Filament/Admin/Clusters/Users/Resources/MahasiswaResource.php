@@ -7,6 +7,7 @@ use App\Filament\Admin\Clusters\Users\Resources\MahasiswaResource\Pages;
 use App\Filament\Admin\Clusters\Users\Resources\MahasiswaResource\RelationManagers;
 use App\Models\Mahasiswa;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,24 +21,66 @@ class MahasiswaResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Mahasiswa';
 
     protected static ?string $cluster = Users::class;
-    protected static ?string $navigationLabel = 'Mahasiswa';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('identity_id')
+                    ->label('Pilih Mahasiswa')
+                    ->options(
+                        Mahasiswa::whereDoesntHave('user')
+                            ->where('prodi_id', session('prodi_id'))
+                            ->orderBy('nim')
+                            ->get()
+                            ->mapWithKeys(fn($m) => [$m->id => $m->nim . ' - ' . $m->nama])
+                            ->toArray()
+                    )
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $mahasiswa = Mahasiswa::find($state);
+                            if ($mahasiswa) {
+                                $domain = env('USER_EMAIL_DOMAIN', 'uit.ac.id');
+                                $set('name', $mahasiswa->nama); // username = NIM
+                                $set('username', $mahasiswa->nim);
+                                $set('email', $mahasiswa->nim . '@' . $domain);
+                            }
+                        }
+                    }),
+                Forms\Components\TextInput::make('username')
+                    ->label('Username (NIM)')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('name')
+                    ->label('Name (Username)')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                // Forms\Components\TextInput::make('password')
+                //     ->password()
+                //     ->required()
+                //     ->maxLength(255)
+                //     ->dehydrateStateUsing(fn($state) => bcrypt($state)),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('identity.nim')
-                    ->label('NIM')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('identity.nama')
-                    ->label('Nama')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('identity.prodi.nama')
-                    ->label('Prodi')
+                Tables\Columns\TextColumn::make('username')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
@@ -51,36 +94,23 @@ class MahasiswaResource extends Resource
             ->actions([
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMahasiswas::route('/'),
-            'create' => Pages\CreateMahasiswa::route('/create'),
-            'edit' => Pages\EditMahasiswa::route('/{record}/edit'),
+            'index' => Pages\ManageMahasiswas::route('/'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'mahasiswa');
-            });
+            ->where('identity_type', 'App\\Models\\Mahasiswa')
+            // ->whereHas('identity', function ($query) {
+            //     $query->where('prodi_id', session()->get('prodi_id'));
+            // })
+        ;
     }
 }

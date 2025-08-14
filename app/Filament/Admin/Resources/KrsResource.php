@@ -48,38 +48,83 @@ class KrsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('mahasiswa_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('mahasiswa.nim')
+                    ->label('NIM')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('matakuliah_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('mahasiswa.nama')
+                    ->label('Nama Mahasiswa')
+                    ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('matakuliah.kode')
+                    ->label('Kode')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('matakuliah.nama')
+                    ->label('Matakuliah')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('matakuliah.sks')
+                    ->label('SKS')
+                    ->sortable(),
+
+
                 Tables\Columns\TextColumn::make('semester')
-                    ->numeric()
+                    // ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('kelas_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('verifikasi'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('mahasiswa_id')
+                    ->label('Nama Mahasiswa')
+                    ->relationship('mahasiswa', 'nama')
+                    ->searchable()
+                    ->preload(false)
+                    ->getSearchResultsUsing(
+                        fn(string $search): array =>
+                        \App\Models\Mahasiswa::where('nama', 'like', "%{$search}%")
+                            ->limit(50)
+                            ->pluck('nama', 'id')
+                            ->toArray()
+                    ),
+                Tables\Filters\SelectFilter::make('matakuliah_id')
+                    ->label('Matakuliah')
+                    ->relationship('matakuliah', 'nama')
+                    ->searchable()
+                    ->preload(false)
+                    ->getSearchResultsUsing(
+                        fn(string $search): array =>
+                        \App\Models\Matakuliah::where('nama', 'like', "%{$search}%")
+                            ->limit(50)
+                            ->pluck('nama', 'id')
+                            ->toArray()
+                    ),
+                Tables\Filters\SelectFilter::make('semester')
+                    ->label('Semester')
+                    ->options([
+                        1 => 'Semester 1',
+                        2 => 'Semester 2',
+                        3 => 'Semester 3',
+                        4 => 'Semester 4',
+                        5 => 'Semester 5',
+                        6 => 'Semester 6',
+                        7 => 'Semester 7',
+                        8 => 'Semester 8',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -97,5 +142,13 @@ class KrsResource extends Resource
             'create' => Pages\CreateKrs::route('/create'),
             'edit' => Pages\EditKrs::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $query->whereHas('mahasiswa', fn($q) => $q->where('prodi_id', session('prodi_id')))
+            ->where('semester', session('semester'));
+        return $query;
     }
 }
