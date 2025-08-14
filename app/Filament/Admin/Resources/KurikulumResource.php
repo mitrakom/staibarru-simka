@@ -3,8 +3,6 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\KurikulumResource\Pages;
-use App\Filament\Admin\Resources\KurikulumResource\RelationManagers;
-use App\Filament\Admin\Resources\KurikulumMatakuliahResource;
 use App\Models\Kurikulum;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,8 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 
 class KurikulumResource extends Resource
 {
@@ -25,26 +21,10 @@ class KurikulumResource extends Resource
     protected static ?string $pluralModelLabel = 'Data Kurikulum';
     protected static ?int $navigationSort = 1;
 
-    // Override method getNavigationItems untuk menambahkan sub-menu
-    // public static function getNavigationItems(): array
-    // {
-    //     return [
-    //         ...parent::getNavigationItems(),
-    //         ...KurikulumMatakuliahResource::getNavigationItems(),
-    //     ];
-    // }
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // Forms\Components\Select::make('prodi_id')
-                //     ->relationship('prodi', 'id')
-                //     ->required(),
-                // Forms\Components\TextInput::make('feeder_id')
-                //     ->required()
-                //     ->maxLength(36),
                 Forms\Components\TextInput::make('nama')
                     ->required()
                     ->maxLength(55),
@@ -77,6 +57,8 @@ class KurikulumResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('No.')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama')
                     ->wrap()
                     ->searchable()
@@ -118,7 +100,6 @@ class KurikulumResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $user = Auth::user();
-        return parent::getEloquentQuery()->where('prodi_id', $user->prodi_id);
+        return parent::getEloquentQuery()->where('prodi_id', session('prodi_id'));
     }
 }

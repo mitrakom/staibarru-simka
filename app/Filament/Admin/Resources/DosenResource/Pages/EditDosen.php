@@ -13,12 +13,12 @@ class EditDosen extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->icon('heroicon-o-arrow-left')
+                ->url(DosenResource::getUrl('index')),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
     }
 }

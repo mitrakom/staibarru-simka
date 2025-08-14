@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('nik');
             $table->string('npwp');
             $table->enum('jenis_kelamin', ['L', 'P', '*']); // L = Laki-laki, P = Perempuan, * = Belum ada informasi
-            $table->uuid('feeder_id')->unique();  // kolom id_registrasi_mahasiswa pada endpoint Feeder (GetListMahasiswa)
+            $table->uuid('feeder_id')->nullable()->unique();  // kolom id_registrasi_mahasiswa pada endpoint Feeder (GetListMahasiswa)
             $table->timestamps();
         });
     }

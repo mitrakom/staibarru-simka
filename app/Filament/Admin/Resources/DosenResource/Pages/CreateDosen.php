@@ -10,14 +10,19 @@ class CreateDosen extends CreateRecord
 {
     protected static string $resource = DosenResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        // $data['prodi_id'] = session('prodi_id');
-        return $data;
-    }
-
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return DosenResource::getUrl('index');
+    }
+
+    // getactionheader
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->icon('heroicon-o-arrow-left')
+                ->url(DosenResource::getUrl('index')),
+        ];
     }
 }

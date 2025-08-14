@@ -3,17 +3,13 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\MatakuliahResource\Pages;
-use App\Filament\Admin\Resources\MatakuliahResource\RelationManagers;
 use App\Models\Matakuliah;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class MatakuliahResource extends Resource
 {
@@ -119,6 +115,8 @@ class MatakuliahResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('kode')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
@@ -149,6 +147,6 @@ class MatakuliahResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('prodi_id', FacadesAuth::user()->prodi_id);
+        return parent::getEloquentQuery()->where('prodi_id', session('prodi_id'));
     }
 }

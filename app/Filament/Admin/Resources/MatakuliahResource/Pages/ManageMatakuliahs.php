@@ -14,6 +14,7 @@ class ManageMatakuliahs extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->icon('heroicon-o-plus')
                 ->mutateFormDataUsing(
                     function (array $data): array {
                         $data['prodi_id'] = session('prodi_id');

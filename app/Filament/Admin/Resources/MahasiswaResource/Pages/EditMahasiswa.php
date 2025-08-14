@@ -13,12 +13,11 @@ class EditMahasiswa extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\Action::make('Kembali')
+                ->url(MahasiswaResource::getUrl('index'))
+                ->icon('heroicon-o-arrow-left'),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
     }
 }
