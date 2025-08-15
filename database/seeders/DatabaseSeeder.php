@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
 
         $admin = User::factory()->create([
             'name' => 'Admin User',
+            'username' => 'admin',
             'email' => 'admin@example.com',
             'identity_id' => 1,
             'identity_type' => Prodi::class, // Simpan tipe modelnya
@@ -44,6 +45,7 @@ class DatabaseSeeder extends Seeder
 
         $prodi = User::factory()->create([
             'name' => 'Prodi User',
+            'username' => 'prodi',
             'email' => 'prodi@example.com',
             'identity_id' => 1,
             'identity_type' => Prodi::class,
@@ -54,6 +56,7 @@ class DatabaseSeeder extends Seeder
 
         $dosen = User::factory()->create([
             'name' => 'Dosen User',
+            'username' => 'dosen',
             'email' => 'dosen@example.com',
             'identity_id' => 1,
             'identity_type' => Dosen::class,
@@ -65,6 +68,7 @@ class DatabaseSeeder extends Seeder
 
         $mahasiswa = User::factory()->create([
             'name' => 'Mahasiswa User',
+            'username' => 'mahasiswa',
             'email' => 'mahasiswa@example.com',
             'identity_id' => 1,
             'identity_type' => Mahasiswa::class,
